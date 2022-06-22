@@ -10,7 +10,7 @@ const mongoose = require("mongoose")
 const createBlogDoc = async function (req, res) {
     try {
         let blogData = req.body
-        //consol.log(blogData)
+        
         if (Object.keys(blogData).length != 0) {
             let savedblogData = await blogModel.create(blogData)
             res.status(201).send({ msg: savedblogData })
