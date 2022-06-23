@@ -68,7 +68,7 @@ example of a query url: blogs?filtername=filtervalue&f2=fv2
 - Protected routes are create a blog, edit a blog, get the list of blogs, delete a blog(s)
 - Set the token, once validated, in the request - `x-api-key`
 - Use a middleware for authentication purpose.
-
+ 
 ### Authorisation
 - Make sure that only the owner of the blogs is able to edit or delete the blog.
 - In case of unauthorized access return an appropirate error message.
