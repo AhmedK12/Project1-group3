@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const route = require("./router/route.js");
 const { default: mongoose } = require("mongoose");
+const validator = require('./middleware/validation')
 const app = express();
 
 app.use(bodyParser.json());
@@ -16,6 +17,9 @@ mongoose
   )
   .then(() => console.log("MongoDb is connected"))
   .catch((err) => console.log(err));
+
+
+app.use(validator.validateRequest)
 
 app.use("/", route);
 
