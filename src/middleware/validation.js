@@ -1,42 +1,7 @@
 
-const tags = []
-const category = []
-const subCategory = []
-function minimumCost(a, b) {
-    // Stores the frequency of string
-    // a and b respectively
-    var fre1 = Array(256).fill(0), fre2 = Array(256).fill(0);
-
-    // Store the frequencies of
-    // characters in a
-    a.split('').forEach(c => {
-        fre1[c.charCodeAt(0)]++;
-    });
-
-    // Store the frequencies of
-    // characters in b
-    b.split('').forEach(c => {
-        fre2[c.charCodeAt(0)]++;
-    });
-
-    // Minimum cost to convert A to B
-    var mincost = 0;
-
-    // Find the minimum cost
-    for (var i = 0; i < 256; i++) {
-        mincost += Math.abs(fre1[i]
-            - fre2[i]);
-    }
-
-    // Print the minimum cost
-    return mincost;
-}
-
-
-
-//  a  = f(27)
-//    asjk,jkl,
-// ["asjk","jkl",""]
+// //  a  = f(27)
+// //    asjk,jkl,
+// // ["asjk","jkl",""]
 
 const validateTags = (tags) => {
     if (!Array.isArray(tags)) {
@@ -51,24 +16,24 @@ const validateTags = (tags) => {
 
 const validateSubCategory = (subCategory) => {
     if (!Array.isArray(subCategory)) {
-        return subCategory.replace("[", "").replace("]", "").replace("{", "").replace("}", "").split(",").filter((subcategory) => {
+        return subCategory.split(",").filter((subcategory) => {
             return subcategory !== ""
         })
     }
     return subCategory
 }
 
-const validateCategory = (category) => {
+// const validateCategory = (category) => {
 
-}
+// }
 //                        (?=.*[0-9]) atleast one digit 
 //                        (?=.*[A-Z]) atleast one uppercase letter
 //                        (?=.*[a-z]) atleast one lowercase letter
 //                        (?=.*[!@#$%^&*]) atleast one special charactor
 //                         [a-zA-Z0-9!@#$%^&*]{6,16} length in b/w in 6 to 16 and any char belongs to [a-zA-Z0-9!@#$%^&*]
 const validatePassword = (password, res) => {
-    console.log(password + " c")
-    let regex = /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/
+    
+    let regex = /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*?%|])[a-zA-Z0-9!@#$%^&*?%|]{6,16}$/
     if (!regex.test(password)) {
         res.status(400).send({ status: false, msg: "Password must contain atleast one uppercase , one lowercase,one special charactor,and lenght of paasword must be in range [6,16]" })
         return false;
@@ -86,15 +51,7 @@ const validateName = (Name, res, whatis) => {
 
 }
 
-
-
-
-
-
-
-
 const validateObjectId = (id, res, whatIs) => {
-    // console.log(id)
     var regex = /^[0-9a-f]{24}$/;
     if (!regex.test(id)) {
         res.status(400).send({ status: false, msg: `${whatIs} is Not Valid` });
@@ -102,13 +59,11 @@ const validateObjectId = (id, res, whatIs) => {
     }
     return true;
 }
-// 633747346746734376473
-
 
 
 
 const validateEmail = (email, res) => {
-    console.log(email)
+    
     var regex = /\S+@\S+\.\S+/;
     if (!regex.test(email)) {
         res.status(400).send({ status: false, msg: "Email should look like this anything@anything.anything" })
@@ -120,7 +75,7 @@ const validateEmail = (email, res) => {
 
 
 const validateRequest = (req, res, next) => {
-    console.log(req.body)
+   
     if (req.query) {
         if (req.query.authorId !== undefined)
             if (!validateObjectId(req.query.authorId, res, "Author Id")) return;
@@ -150,9 +105,6 @@ const validateRequest = (req, res, next) => {
     next()
 
 }
-
-
-
 
 module.exports.validateRequest = validateRequest
 
