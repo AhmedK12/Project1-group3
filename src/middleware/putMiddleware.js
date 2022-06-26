@@ -1,6 +1,6 @@
 const blogModel = require('../Models/blogModel.js')
 
-
+//////////////////////////////
 const validatePutRequest = async (req,res,next)=>{
     try {
         let objectIdRegex = /^[0-9a-f]{24}$/
@@ -21,3 +21,4 @@ const validatePutRequest = async (req,res,next)=>{
 module.exports.validatePutRequest = validatePutRequest
 
 
+//////

@@ -1,10 +1,4 @@
-
-
-
-
-
-
-
+// ////////////////////////////
 const validateDeleteByBlogIdRequest = async (req,res,next)=>{
     try {
     if (!req.params.blogId) return res.status(400).send({ status: false, msg: "Bad Request" });
@@ -20,7 +14,7 @@ const validateDeleteByBlogIdRequest = async (req,res,next)=>{
 }
 
 
-
+// ////////////////////////////////
 const validateDeleteByQueryParams = async (req,res,next)=>{
     if(!req.query) return res.status(400).send({status:true,msg:"Query Must Be Present"})
     next()

@@ -23,7 +23,6 @@ const validateSubCategory = (subCategory) => {
     return subCategory
 }
 
-// const validateCategory = (category) => {
 
 // }
 //                        (?=.*[0-9]) atleast one digit 

@@ -4,7 +4,7 @@ const lodash = require('lodash')
 const mongoose = require("mongoose")
 const authorModel = require('../Models/authorModel')
 
-/*####################################################### POST API ####################################################*/
+// /*####################################################### POST API ####################################################*///////
 const createBlogDoc = async function (req, res) {
     try {
         let blogData = req.body
