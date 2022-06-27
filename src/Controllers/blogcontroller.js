@@ -3,7 +3,6 @@ const moment = require('moment')
 const lodash = require('lodash')
 const mongoose = require("mongoose")
 const authorModel = require('../Models/authorModel')
-const { filter, update } = require("lodash")
 const ObjectId = mongoose.Types.ObjectId;
 
 
@@ -104,38 +103,6 @@ const blogPut = async (req, res) => {
 
 
 
-const blogPut2 = async (req, res) => {
-    try {
-        update.isPublished = true;
-        update.authorId = req.headers.authorId;
-
-        let blog = req.body;
-        blog.blogId = req.params.blogId
-        blogToBeUpdted = req.headers.blogToBeUpdted
-        blog["tags"] = lodash.uniq(blogToBeUpdted.tags.concat(req.body.tags||[]));
-        blog["subCategory"] = lodash.uniq(blogToBeUpdted.subCategory.concat(req.body.subCategory||[])); 
-        blog["isPublished"] = true
-        blog["publishedAt"] = moment().format("YYYY MM DDThh:mm:ss.SSS[Z]");
-        let blogUpdated = await blogModel.findOneAndUpdate({ _id: blog.blogId }, blog, { new: true, upsert: true, strict: false })
-        if (Object.keys(blogUpdated).length===0) return res.status(404).send({ status: false, msg: "Blog does not exist" })
-        return res.status(201).send({ status: true, data: blogUpdated })
-    } catch (error) {
-        res.status(500).send({ status: false, msg: error.message })
-    }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -184,6 +151,7 @@ const blogDeletByParams = async (req, res) => {
     try {
     let filter = {}
     filter.authorId = req.headers.authorId
+    filter.isDeleted = false
     if(req.query.category) filter.category = req.query.category
     if(req.query.tags) filter.tags = req.query.tags
     if(req.query.subCategory) filter.subCategory = req.query.subCategory
@@ -191,9 +159,9 @@ const blogDeletByParams = async (req, res) => {
     let blogToBeDeleted = await blogModel.find(filter)
     if (Object.keys(blogToBeDeleted).length===0) return res.status(404).send({ status: false, msg: "Blog DoesNot Exist" });
     for(let i=0;i<blogToBeDeleted.length;i++){
-    await blogModel.findOneAndUpdate( {_id:blogDeletById.blogId}, {$set:{isDeleted:true,deletedAt:moment().format("YYYY MM DDThh:mm:ss.SSS[Z]")}},{ new: true, upsert: true, strict: false })
-    res.status(200).send()
+    await blogModel.findOneAndUpdate( {_id:blogToBeDeleted[i]._id}, {$set:{isDeleted:true,deletedAt:moment().format("YYYY MM DDThh:mm:ss.SSS[Z]")}},{ new: true, upsert: true, strict: false })
     }
+    res.status(200).send()
     } catch (error) {
         res.status(500).send({ status: false, msg: error.message })
     }

@@ -89,8 +89,8 @@ const validateDeleteByBlogIdRequest = async (req,res,next)=>{
 
 const validateDeleteByQueryParams = async (req,res,next)=>{
      try {
-        if(!req.query) return res.status(400).send({status:true,msg:"Query Must Be Present"})
-        if(req.query.authorId!==undefined) if(req.headers.authorId!==req.query.authorId) return res.status(400).send({status:true,msg:"Aceess Denied"})
+        if(Object.keys(req.query).length===0) return res.status(400).send({status:false,msg:"Query Must Be Present"})
+        if(req.query.authorId!==undefined) if(req.headers.authorId!==req.query.authorId) return res.status(403).send({status:true,msg:"Aceess Denied"})
         req.query.tags = req.query.tags !== undefined?validators.validateTags(req.query.tags):undefined
         req.query.subCategory = req.query.subCategory !== undefined?validators.validateTags(req.query.subCategory):undefined
         next()
