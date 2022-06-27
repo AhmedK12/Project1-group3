@@ -21,6 +21,7 @@ const blogSchema = new mongoose.Schema(
     authorId: {
       type: ObjectId,
       ref: "projectAuthor",
+      required:true
     },
     category: {
       type: String,
@@ -31,8 +32,8 @@ const blogSchema = new mongoose.Schema(
         {
           type: String,
         },
-      ],
-      required: true,
+      ]
+    
     },
     isPublished: {
       type: Boolean,
@@ -42,8 +43,14 @@ const blogSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    deletedAt: {
+      type: String,
+    },
+    publishedAt: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("blogDoc", blogSchema);
+module.exports = mongoose.model("blogdoc", blogSchema);

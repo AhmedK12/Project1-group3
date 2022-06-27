@@ -1,15 +1,18 @@
 const authorModel = require("../Models/authorModel");
-
+const jwt = require("jsonwebtoken");
 
 
 
 const createAuthor = async function (req, res) {
   try {
-    let data = req.body;
-    if (Object.keys(data).length != 0) {
-      let savedData = await authorModel.create(data);
-      res.status(201).send({status:true, msg: savedData });
-    } else res.status(400).send({ msg: "BAD REQUEST" });
+    let author = {}
+    author.fname = req.body.fname;
+    author.lname = req.body.lname;
+    author.title = req.body.title
+    author.email = req.body.email;
+    author.password = req.body.password
+    let savedData = await authorModel.create(author);
+    res.status(201).send({status:true, msg: savedData });
   } catch (err) {
    
     res.status(500).send({ msg: "Error", error: err.message });
@@ -20,12 +23,10 @@ const createAuthor = async function (req, res) {
 
 const authorLogin = async function (req, res) {
   try{ 
-      authorName = req.body.email
-      authorPassword = req.body.password
-  
-
+  authorName = req.body.email
+  authorPassword = req.body.password
   let authorDetails = await authorModel.findOne({ email: authorName, password: authorPassword })
-  if (!authorDetails) return res.status(400).send({ status: false, MSg: "authorName or authorpassword is invalid" })
+  if (!authorDetails) return res.status(400).send({ status: false, MSg: "Email or Password is Invalid" })
   let token = jwt.sign(
     {
       authorId: authorDetails._id.toString(),

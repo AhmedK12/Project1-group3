@@ -2,17 +2,31 @@ const express = require("express");
 const router = express.Router();
 const authorController = require("../Controllers/authorController");
 const blogController = require("../Controllers/blogcontroller");
-const validatePutRequest = require("../middleware/putMiddleware")
-const validateDeleteRequestById = require("../middleware/deletMiddleware")
+const authentication = require('../middleware/authentication')
+const authorMiddleware = require('../middleware/authorMiddleware')
+const blogMiddleware = require("../middleware/blogMiddleware")
 
 
 
-router.post("/authors", authorController.createAuthor);
-router.post("/login",authorController.authorLogin)
-router.post("/blogs", blogController.createBlogDoc);
-router.get("/blogs",blogController.blogs)
-router.put("/blogPut/:blogId",validatePutRequest.validatePutRequest, blogController.blogPut);
-router.delete("/blogDel/:blogId",validateDeleteRequestById.validateDeleteByBlogIdRequest, blogController.blogDeletById)
-router.delete("/blogDelByQuery",validateDeleteRequestById.validateDeleteByQueryParams,blogController.blogDeletByParams)
+
+
+
+
+
+
+
+router.post("/authors",authorMiddleware.validateRequest, authorController.createAuthor);
+router.post("/login",authorMiddleware.validateloginrequest, authorController.authorLogin)
+router.post("/blogs", authentication.authenticate,blogMiddleware.validateCreateBlogRequest, blogController.createBlogDoc);
+router.get("/blogs",authentication.authenticate,blogMiddleware.vlidateBlogGetRequest, blogController.blogs)
+router.put("/blogPut/:blogId",authentication.authenticate, blogMiddleware.validatePutRequest, blogController.blogPut);
+router.delete("/blogDel/:blogId",authentication.authenticate, blogMiddleware.validateDeleteByBlogIdRequest, blogController.blogDeletById)
+router.delete("/blogDelByQuery",authentication.authenticate, blogMiddleware.validateDeleteByQueryParams,blogController.blogDeletByParams)
+
+
+
+
+
+
 
 module.exports = router;
