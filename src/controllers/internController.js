@@ -9,7 +9,6 @@ exports.createIntern = async function(req,res){
         if(name) savedObj.name = req.body.name
         if(email) savedObj.email = req.body.email
         if(mobile) savedObj.mobile = req.body.mobile
-
         const findIdofCollege = await collegeModel.findOne(savedObj.name).select({_id : 1})
         if(!findIdofCollege) return res.status(404).send({status:false,messsge:"College Not Exist"})
         savedObj.collegeId = findIdofCollege._id.toString()
