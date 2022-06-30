@@ -1,38 +1,58 @@
 const collegeModel = require("../models/collegeModel")
 const internModel = require("../models/internModel")
-const validator = require("./validators")
 
-// create College         
+
+
+
+
+
+/***************************************************************** POST API **************************************************************/
+
+
+
 const createCollege = async function (req, res) {
     try {
-        const details = req.body;
+        const details ={}
+        details.name = req.body.name;
+        details.fullName = req.body.fullName;
+        details.fullName = req.body.logoLink
         const savedCollege = await collegeModel.create(details);
         return res.status(201).send({ status: true, data: savedCollege });
-    } catch (error) {
+    }   catch (error) {
         console.log(error)
         return res.status(500).send({ status: false, messsage: error.message })
     }
 }
 
 
-//get college details
+
+
+
+/***************************************************************** GET API **************************************************************/
+
+
+
 const collegeInterns = async function (req, res) {
     try {
-        const collegeAbbreviation = req.query.collegeName;
-        if (!collegeAbbreviation) return res.status(400).send({ status: false, message: "enter the abbreviated collegeName in query params" }); //validation1
-        let college = await collegeModel.findOne({ name: collegeAbbreviation }).select({ name: 1, fullName: 1, logoLink: 1 });
-        if (!college) return res.status(404).send({ status: false, message: "no college found" });
-        const clgId = college._id   
-        const internsList = await internModel.find({ collegeId: clgId }).select({ name: 1, email: 1, mobile: 1 });
-        const result = { ...college.toJSON(), interns: internsList };
-        delete result._id;
-        if (internsList.length === 0) result.interns = 'No interns Available in this College'
-        return res.status(200).send({ status: true, data: result });
-
+        let {_id,name,fullName,logoLink} = req.headers.data[0];
+        const internsList = await internModel.find({collegeId : _id}).select({name:1, email:1, mobile:1});
+        if(internsList.length === 0) return res.status(404).send({status:false,message:"currently, there a no any interns at this college"})
+        return res.status(200).send({ status: true, data: {name:name,fullName:fullName,logoLink:logoLink,interns:internsList} });
     } catch (error) {
         console.log(error);
         return res.status(500).send({ status: false, message: error.message })
     }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = { createCollege, collegeInterns }
