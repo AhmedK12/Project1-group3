@@ -5,10 +5,10 @@ const { default: mongoose } = require('mongoose');
 const app = express();
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+ 
 
 mongoose.connect("mongodb+srv://hsupare:2kZE1zdHBT5kzVVm@cluster0.5drhi.mongodb.net/group28Database", {
-    useNewUrlParser: true
+    useNewUrlParser: true 
 })
 .then( () => console.log("MongoDb is connected"))
 .catch ( err => console.log(err) )
