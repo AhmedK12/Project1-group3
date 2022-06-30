@@ -2,36 +2,32 @@ const collegeModel = require('../models/collegeModel')
 
 
 
-
-
-const isEmail = (x)=>{
-    return (typeof x !=='string' || x.trim()===0  || !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(x))?"Inavlid Email":true;
+const isEmail =  async (x)=>{
+    return (typeof x !=='string' || x.trim()===0  || !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(x))?"Inavlid Email":await isAllreadyPresent("email",x)?"Email Allready Used":"No Error";
 }
-
 const isMobile = (x)=>{
-    return (typeof x ==='null' || x.toString.trim()===0  || !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(x.toString))?"Invalid Mobile No":true;
+    return (typeof x ==='null' || x.toString.trim()===""  || !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(x.toString))?"Invalid Mobile No":"No Error";
 }
-
-
 const isName = (x)=>{
-    return (typeof x !=='string' || x.trim()===0  || !/^[A-Za-z ]{1,29}$/.test(x))?"Invalid Name":true;
+    return (typeof x !=='string' || x.trim()===""  || !/^[A-Za-z ]{1,29}$/.test(x))?"Invalid Name":"No Error";
 }
-
-
 const isCollege = (x)=>{
-    return (typeof x !=='string' || x.trim()===0  || !/^\s*(?=[A-Za-z])[a-zA-Z\s\.\,]{2,}\s*$/.test(x))?"Invalid College Name":true;
+    return (typeof x !=='string' || x.trim()===""  || !/^\s*(?=[A-Za-z])[a-zA-Z\s\.\,]{2,}\s*$/.test(x))?"Invalid College Name":"No Error";
 }
-
-
 function isLinkValid(x) {
-   return (typeof x !=='string' || x.trim() === 0 || !(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png|svg|jpeg)/.test(x)))?"Invalid LogoLink!":true;
+   return (typeof x !=='string' || x.trim() === 0 || !(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png|svg|jpeg)/.test(x)))?"Invalid LogoLink!":"No Error";
 }
-
 const isAllreadyPresent = async (atribute,value,req)=>{ 
     let data = await collegeModel.findOne({ [atribute]: value });
-    req.headers.collegId = data._id;
-    return data?true:false;
+    if(data) req.headers.collegId = data._id;
+    console.log(data)
+    let p = data?true:false;
+    return p
 }
+
+
+
+
 
 const mincost = async (a, b)=>
 {

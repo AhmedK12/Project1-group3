@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const  {createCollege,collegeInterns} = require('../controllers/collegeController')
 const internController = require('../controllers/internController')
-const middleware = require("../middlewares/commonMiddlewares")
+const middleware = require("../middlewares/middlewares")
 
 
 

@@ -15,10 +15,9 @@ const internModel = require('../models/internModel')
 const createIntern = async function(req, res){
     try {
         const details ={}
-        details.name = req.body.name;
-        details.email = req.body.email;
-        details.mobile = req.body.mobile
-        details.collegeName = req.body.collegeName;
+        details.name = req.body.name.trim();
+        details.email = req.body.email.trim();
+        details.mobile = req.body.mobile.trim()
         details.collegeId = req.headers.collegeId
         const savedIntern = await internModel.create(details);
         return res.status(201).send({status:true, data:savedIntern});
