@@ -14,7 +14,7 @@ const createCollege = async function (req, res) {
     try {
         const details ={}
         details.name = req.body.name.trim().toLowerCase();
-        details.fullName = req.body.fullName.trim().split(" ").map(x=>x.charAt(0).toUpperCase()+x.slice(1)).join(" ");
+        details.fullName = req.body.fullName.split(" ").filter(word=>word).join(" ")
         details.logoLink = req.body.logoLink.trim();
         const savedCollege = await collegeModel.create(details);
         return res.status(201).send({ status: true, data: savedCollege });

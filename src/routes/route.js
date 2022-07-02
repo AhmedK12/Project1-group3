@@ -16,7 +16,7 @@ const middleware = require("../middlewares/middlewares")
 
 
 router.post('/functionup/colleges',middleware.processCollegeRequest, createCollege) 
-router.post('/functionup/interns',middleware.processInternRequest, internController.createIntern)
+router.post('/functionup/interns', internController.createIntern)
 router.get('/functionup/collegeDetails',middleware.processGetRequest, collegeInterns )  
 
  

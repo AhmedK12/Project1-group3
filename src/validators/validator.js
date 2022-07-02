@@ -6,7 +6,7 @@ const isEmail =  async (x)=>{
     return (typeof x !=='string' || x.trim()===0  || !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(x))?"Inavlid Email":await isAllreadyPresent("email",x)?"Email Allready Used":"No Error";
 }
 const isMobile = (x)=>{
-    return (typeof x ==='null' || x.toString.trim()===""  || !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(x.toString))?"Invalid Mobile No":"No Error";
+    return (typeof x ==='null' || x.toString.trim()===""  || !/^[6-9]{1}[0-9]{9}$/.test(x.toString))?"Invalid Mobile No":"No Error";
 }
 const isName = (x)=>{
     return (typeof x !=='string' || x.trim()===""  || !/^[A-Za-z ]{1,29}$/.test(x))?"Invalid Name":"No Error";
@@ -31,6 +31,8 @@ const isAllreadyPresent = async (atribute,value,req)=>{
 
 const mincost = async (a, b)=>
 {
+
+   try {
     let dp = Array(a.length+1).fill().map(() => Array(b.length+1));
     for(let i=0;i<=a.length;i++){
         for(let j=0;j<=b.length;j++){
@@ -47,13 +49,18 @@ const mincost = async (a, b)=>
     }
     return dp[a.length][b.length];
 
+   } catch (error) {
+    return res.status(500).send({ status: false, messsage: error.message })
+   }
 	
 }
 
 
 
+
 const nearestCollege = async (name)=>{
- let collegeNames = await collegeModel.find();
+ try {
+    let collegeNames = await collegeModel.find();
  let list = []; 
  for(let i=0;i<collegeNames.length;i++){
    await list.push([collegeNames[i], await mincost(name,collegeNames[i].name.toLowerCase())])
@@ -62,7 +69,10 @@ const nearestCollege = async (name)=>{
  await list.sort((a,b)=>{
      return a[1]-b[1]
  })
- return list[0]
+ return list[0] 
+ } catch (error) {
+    return res.status(500).send({ status: false, messsage: error.message })
+ }
 }
 
 
